@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Sign Up | Fitjacket{% endblock %}
+
+{% block content %}
+<section class="py-5 text-center">
+  <div class="container">
+    <h1 class="text-white mb-3">{% trans "Create Your Account" %}</h1>
+
+    {% url 'account_login' as login_url %}
+    <p class="text-light">
+      {% blocktranslate %}Already have an account? <a href="{{ login_url }}">Log in here</a>.{% endblocktranslate %}
+    </p>
+
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-6 text-start">
+        <form method="post" action="{% url 'account_signup' %}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          {{ redirect_field }}
+          <button type="submit" class="btn btn-red w-100">{% trans "Sign Up" %}</button>
+        </form>
+
+        {% if SOCIALACCOUNT_ENABLED %}
+          <hr class="my-4" />
+          <div class="text-center text-light mb-2">{% trans "Or sign up with:" %}</div>
+          {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

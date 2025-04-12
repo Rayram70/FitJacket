@@ -1,0 +1,40 @@
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+.navbar {
+  background-color: #111;
+}
+
+.navbar-brand {
+  color: #e50914;
+  font-weight: bold;
+}
+
+.navbar-brand:hover {
+  color: #ff1a1a;
+}
+
+.nav-link {
+  color: #ccc;
+}
+
+.nav-link:hover {
+  color: #fff;
+}
+
+.btn-red {
+  background-color: #e50914;
+  color: #fff;
+}
+
+.btn-red:hover {
+  background-color: #ff1a1a;
+}
+
+footer {
+  background-color: #111;
+  color: #777;
+  padding: 2rem 0;
+}

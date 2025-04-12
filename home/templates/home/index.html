@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home | Fitjacket{% endblock %}
+
+{% block content %}
+  <section class="text-center py-5">
+    <div class="container">
+      {% if user.is_authenticated %}
+        <h1 class="display-4 fw-bold text-white">Welcome back, {{ user.first_name|default:user.username }}!</h1>
+        <p class="lead text-light mb-4">Ready to crush another workout?</p>
+        <a href="{}" class="btn btn-red btn-lg">Log a Workout</a>
+      {% else %}
+        <h1 class="display-4 fw-bold text-white">Track. Share. Improve.</h1>
+        <p class="lead text-light mb-4">Fitjacket helps you stay on top of your fitness goals by tracking your workouts and progress.</p>
+        <a href="{% url 'home.about' %}" class="btn btn-red btn-lg me-2"> About Us</a>
+        <a href="{% url 'account_login' %}" class="btn btn-outline-light btn-lg">Log In</a>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="py-5 bg-dark">
+    <div class="container">
+      <div class="row text-center text-light">
+        <div class="col-md-4 mb-4">
+          <h3 class="text-red">Log Workouts</h3>
+          <p>Quickly add workouts with details like duration, intensity, and notes.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h3 class="text-red">Track Progress</h3>
+          <p>Visualize your consistency and gains with timeline and stats.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h3 class="text-red">Stay Motivated</h3>
+          <p>Set goals, track streaks, and push yourself further with Fitjacket.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+
+

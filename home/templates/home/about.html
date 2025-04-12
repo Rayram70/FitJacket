@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us | Fitjacket{% endblock %}
+
+{% block content %}
+  <section class="py-5 text-center">
+    <div class="container">
+      <h1 class="display-4 fw-bold text-white">Our Mission</h1>
+      <p class="lead text-light mb-4">
+        Fitjacket is more than just a fitness app — it's a commitment to helping people stay consistent, motivated, and connected through every stage of their fitness journey.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-5 bg-dark">
+    <div class="container">
+      <div class="row text-light">
+        <div class="col-md-6 mb-4">
+          <h3 class="text-red">Built for Lifters, Runners, and Everyone in Between</h3>
+          <p>
+            Whether you're training for a marathon, trying to hit a new PR, or just getting into a routine — Fitjacket gives you the tools to plan, track, and reflect on your workouts.
+          </p>
+          <p>
+            Our platform is simple, intuitive, and designed to get out of your way — so you can stay focused on what matters: showing up.
+          </p>
+        </div>
+        <div class="col-md-6 mb-4">
+          <h3 class="text-red">Why We Exist</h3>
+          <p>
+            We created Fitjacket because we saw a gap between performance and accountability. Spreadsheets and notebooks don't scale. Social platforms are too noisy. We wanted a focused, motivating space just for fitness.
+          </p>
+          <p>
+            If you're here, you're already ahead. Let’s go further together.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 text-center">
+    <div class="container">
+      <h2 class="text-white mb-3">Join the Movement</h2>
+      <a href="{% url 'account_signup' %}" class="btn btn-red btn-lg me-2">Create an Account</a>
+      <a href="{}" class="btn btn-outline-light btn-lg">Explore Workouts</a>
+    </div>
+  </section>
+{% endblock %}
+
