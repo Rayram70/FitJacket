@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}My Workouts{% endblock %}
+
+{% block content %}
+<h2 class="text-white mb-4">Workout History</h2>
+{% if workouts %}
+  <ul class="list-group">
+    {% for w in workouts %}
+      <li class="list-group-item">
+        <strong>{{ w.date }}</strong> - {{ w.activity }} ({{ w.duration }} min)
+        {% if w.logged_by != w.user %}
+          <br><small>Logged by {{ w.logged_by.username }}</small>
+        {% endif %}
+        {% if w.notes %}
+          <br><small>Notes: {{ w.notes }}</small>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p class="text-light">No workouts yet.</p>
+{% endif %}
+{% endblock %}

@@ -6,6 +6,5 @@ urlpatterns = [
     path('about/', views.about, name='home.about'),
 
 
-
 ]
 
