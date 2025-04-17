@@ -38,13 +38,13 @@
                 <a class="nav-link" href="{% url 'user_dashboard' %}">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Feed</a>
+                <a class="nav-link" href="{% url 'social:feed' %}">Feed</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Groups</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Post</a>
+                <a class="nav-link" href="{% url 'social:create_post' %}">Post</a>
               </li>
             {% endif %}
           </ul>
@@ -59,19 +59,24 @@
               </ul>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="{}">Profile</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
+                    {% if user.profile.avatar %}
+                        <img src="{{ user.profile.avatar.url }}" class="rounded-circle me-2" width="48" height="48" alt="Profile" style="object-fit: cover;">
+                    {% else %}
+                        <img src="{% static 'img/default-avatar.png' %}" class="rounded-circle me-2" width="48" height="48" alt="Default Avatar">
+                    {% endif %}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="{% url 'profile_detail' %}">View Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'profile_edit' %}">Edit Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="{% url 'account_logout' %}">Logout</a></li>
+                </ul>
             </li>
 
-            <li class="nav-item">
-              <span class="navbar-text text-light me-2">
-                {% if user.profile.role == 'trainer' %}
-                  Coach {{ user.username }}
-                {% else %}
-                  Hi, {{ user.username }}
-                {% endif %}
-              </span>
-            </li>
+
+
 
             <li class="nav-item">
               <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>

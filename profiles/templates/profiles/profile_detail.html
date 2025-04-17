@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<h2 class="text-white">My Profile</h2>
+
+<div class="card bg-dark text-light p-3 mb-4">
+  {% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}" class="rounded-circle mb-3" width="120" height="120">
+  {% else %}
+    <div class="text-muted">No avatar uploaded.</div>
+  {% endif %}
+
+  <p><strong>Username:</strong> {{ profile.user.username }}</p>
+  <p><strong>Email:</strong> {{ profile.user.email }}</p>
+  <p><strong>Role:</strong> {{ profile.get_role_display }}</p>
+  <p><strong>Bio:</strong><br>{{ profile.bio|linebreaksbr }}</p>
+
+  <a href="{% url 'profile_edit' %}" class="btn btn-outline-light mt-2">Edit Profile</a>
+</div>
+{% endblock %}
