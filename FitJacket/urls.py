@@ -27,15 +27,13 @@ urlpatterns = [
 
         path('accounts/', include('allauth.urls')),
         path('', include('profiles.urls')),
-
- posts
+    
         path('groups/', include('groups.urls')),
 
         path('workouts/', include('workouts.urls', namespace='workouts')),
 
         path('social/', include('social.urls')),
 
-main
 
 
 ]
