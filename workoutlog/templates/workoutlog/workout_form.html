@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Log Workout{% endblock %}
+
+{% block content %}
+<h2 class="text-white">Log a Workout</h2>
+<form method="post" class="mt-4">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-red">Save Workout</button>
+</form>
+{% endblock %}

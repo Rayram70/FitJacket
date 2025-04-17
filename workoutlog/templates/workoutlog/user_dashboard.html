@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="text-white mb-4">Welcome, {{ user.first_name|default:user.username }}</h2>
+
+<div class="row mb-5">
+  <div class="col-md-6">
+    <div class="card bg-dark border-light">
+      <div class="card-body">
+        <h5 class="card-title text-white">Monthly Workouts</h5>
+        <canvas id="workoutBarChart" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card bg-dark border-light">
+      <div class="card-body">
+        <h5 class="card-title text-white">Monthly Minutes</h5>
+        <canvas id="minutesBarChart" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="card bg-dark border-light mb-5">
+  <div class="card-body">
+    <h5 class="card-title text-white">🎯 Set Your Monthly Goal</h5>
+    <form method="post" class="text-light">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_monthly_workout_goal" class="form-label">Workout Goal</label>
+        {{ goal_form.monthly_workout_goal }}
+      </div>
+      <div class="mb-3">
+        <label for="id_monthly_minutes_goal" class="form-label">Minutes Goal</label>
+        {{ goal_form.monthly_minutes_goal }}
+      </div>
+      <button type="submit" class="btn btn-red">Update Goal</button>
+    </form>
+  </div>
+</div>
+
+<div class="alert alert-secondary text-dark mb-5">
+  <h5 class="mb-1">📅 This Month</h5>
+  <p class="mb-0">
+    You've logged <strong>{{ stats.this_month.workouts }}</strong> workouts and
+    <strong>{{ stats.this_month.minutes }}</strong> total minutes.
+  </p>
+  <p class="mb-0">
+    Your goal: <strong>{{ stats.goal.monthly_workout_goal }}</strong> workouts /
+    <strong>{{ stats.goal.monthly_minutes_goal }}</strong> minutes
+  </p>
+</div>
+
+<h4 class="text-white mb-3">Recent Workouts</h4>
+<ul class="list-group">
+  {% for workout in stats.recent %}
+    <li class="list-group-item">
+      <strong>{{ workout.date }}</strong> — {{ workout.activity }} ({{ workout.duration }} min)
+      {% if workout.notes %}
+        <br><small>{{ workout.notes }}</small>
+      {% endif %}
+    </li>
+  {% empty %}
+    <li class="list-group-item">No recent workouts found.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const labels = {{ stats.chart.labels|safe }}
+  const workoutData = {{ stats.chart.workouts|safe }}
+  const minutesData = {{ stats.chart.minutes|safe }}
+
+  const workoutGoal = {{ stats.goal.monthly_workout_goal|default:0 }}
+  const minutesGoal = {{ stats.goal.monthly_minutes_goal|default:0 }}
+
+  new Chart(document.getElementById('workoutBarChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Workouts',
+        data: workoutData,
+        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+        borderRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#fff' } }
+      },
+      scales: {
+        x: { ticks: { color: '#fff' } },
+        y: {
+          beginAtZero: true,
+          max: workoutGoal > 0 ? workoutGoal : undefined,
+          ticks: { color: '#fff' }
+        }
+      }
+    }
+  })
+
+  new Chart(document.getElementById('minutesBarChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Minutes',
+        data: minutesData,
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        borderRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#fff' } }
+      },
+      scales: {
+        x: { ticks: { color: '#fff' } },
+        y: {
+          beginAtZero: true,
+          max: minutesGoal > 0 ? minutesGoal : undefined,
+          ticks: { color: '#fff' }
+        }
+      }
+    }
+  })
+</script>
+{% endblock %}

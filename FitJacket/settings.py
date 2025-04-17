@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     # Local apps
     'home',
     'social',
+    'profiles.apps.ProfilesConfig',
+    'workoutlog',
 ]
 
 
@@ -153,6 +155,12 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+SIGNING_REDIRECT_URL = '/'
 
 ACCOUNT_LOGOUT_REDIRECT_URL = reverse_lazy('home.index')
 ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_FORMS = {
+    'signup': 'profiles.forms.CustomSignupForm'  # Adjust path if you're using a different app
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
