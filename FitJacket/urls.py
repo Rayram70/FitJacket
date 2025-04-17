@@ -27,7 +27,7 @@ urlpatterns = [
 
         path('groups/', include('groups.urls')),
 
-
+        path('workouts/', include('workouts.urls', namespace='workouts')),
 
 
 ]
