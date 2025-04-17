@@ -25,6 +25,7 @@ urlpatterns = [
 
         path('accounts/', include('allauth.urls')),
 
+        path('groups/', include('groups.urls')),
 
 
 
