@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 900px; margin: auto; padding: 2rem;">
+  <h1 style="font-size: 2rem; font-weight: bold; color: white;">Workout Videos</h1>
+
+  {% if videos %}
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem;">
+      {% for video in videos %}
+        <a href="{{ video.video_url }}" target="_blank" style="text-decoration: none;">
+          <div style="display: flex; gap: 1.5rem; background-color: #1e1e1e; padding: 1rem; border-radius: 12px;">
+            <!-- Thumbnail -->
+            <img src="https://img.youtube.com/vi/{{ video.get_video_id }}/0.jpg" alt="{{ video.title }}"
+                 style="width: 160px; height: 90px; border-radius: 8px; object-fit: cover;">
+
+            <!-- Title + Description -->
+            <div>
+              <h3 style="margin: 0; color: white;">{{ video.title }}</h3>
+              <p style="margin-top: 0.5rem; color: #aaa; font-size: 0.9rem;">{{ video.description }}</p>
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="color: #ccc;">No workout videos available yet. Check back soon!</p>
+  {% endif %}
+</div>
+{% endblock %}
