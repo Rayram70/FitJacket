@@ -1,5 +1,7 @@
 from allauth.account.forms import SignupForm
 from django import forms
+from .models import Profile
+
 
 class CustomSignupForm(SignupForm):
     ROLE_CHOICES = (
@@ -15,3 +17,10 @@ class CustomSignupForm(SignupForm):
         user.profile.role = role
         user.profile.save()
         return user
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar', 'bio' ]
+        widgets = {
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Create Post{% endblock %}
+
+{% block content %}
+<h2 class="text-white mb-4">Create Post</h2>
+<form method="post" enctype="multipart/form-data" class="text-light">
+  {% csrf_token %}
+  <div class="mb-3">
+    {{ form.content.label_tag }}
+    {{ form.content }}
+  </div>
+
+  <div class="mb-3">
+    {{ form.image.label_tag }}
+    {{ form.image }}
+  </div>
+
+  <div class="form-check mb-3">
+    {{ form.include_dashboard }} {{ form.include_dashboard.label_tag }}
+  </div>
+
+  <button type="submit" class="btn btn-red">Post</button>
+</form>
+{% endblock %}
