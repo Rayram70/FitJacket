@@ -34,6 +34,8 @@ urlpatterns = [
 
         path('social/', include('social.urls')),
 
+        path('events/', include('events.urls')),
+
 
 
 ]

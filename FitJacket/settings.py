@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'workoutlog',
     'groups',
     'workouts',
+    'events',
 ]
 
 
