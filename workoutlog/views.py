@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from .forms import WorkoutForm, GoalForm
 from .models import Workout, Goal
 import calendar
+from leaderboard.models import UserProfile, Badge, UserBadge
 
 @login_required
 def workout_create(request):
@@ -87,3 +88,31 @@ def user_dashboard(request):
 def my_workouts(request):
     workouts = Workout.objects.filter(user=request.user).order_by('-date')
     return render(request, 'workoutlog/workout_list.html', {'workouts': workouts})
+
+@login_required
+def workout_create(request):
+    if request.method == 'POST':
+        form = WorkoutForm(request.POST, current_user=request.user)
+        if form.is_valid():
+            workout = form.save(commit=False)
+            workout.user = request.user
+            workout.logged_by = request.user
+            workout.save()
+
+            # ✅ Award points
+            profile, created = UserProfile.objects.get_or_create(user=request.user)
+            profile.points += 10  # You can tweak the value based on effort/intensity
+            profile.save()
+
+            # ✅ Award badges if thresholds met
+            earned_badges = UserBadge.objects.filter(user=request.user).values_list('badge', flat=True)
+            available_badges = Badge.objects.exclude(id__in=earned_badges)
+            for badge in available_badges:
+                if profile.points >= badge.threshold:
+                    UserBadge.objects.create(user=request.user, badge=badge)
+
+            return redirect('my_workouts')
+    else:
+        form = WorkoutForm(current_user=request.user)
+
+    return render(request, 'workoutlog/workout_form.html', {'form': form})

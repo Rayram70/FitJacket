@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="fw-bold mb-3">🎖️ Your Badges</h2>
+<ul class="list-group">
+  {% for badge in badges %}
+    <li class="list-group-item bg-dark text-light border-secondary">
+      <strong>{{ badge.badge.name }}</strong>: {{ badge.badge.description }}
+    </li>
+  {% empty %}
+    <li class="list-group-item text-muted">You haven't earned any badges yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

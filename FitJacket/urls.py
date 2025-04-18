@@ -36,6 +36,8 @@ urlpatterns = [
 
         path('events/', include('events.urls')),
 
+        path('leaderboard/', include('leaderboard.urls')),
+
 
 
 ]

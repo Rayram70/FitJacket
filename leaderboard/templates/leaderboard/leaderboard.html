@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4 fw-bold">🏆 Leaderboard</h1>
+
+<table class="table table-dark table-striped rounded-4 shadow">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>User</th>
+      <th>Minutes</th>
+      <th>Workouts Logged</th>
+      <th></th> <!-- Empty column for medals -->
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in leaderboard %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.total_minutes }}</td>
+        <td>{{ user.total_workouts }}</td>
+        <td>
+          {% if forloop.counter == 1 %}
+            🥇
+          {% elif forloop.counter == 2 %}
+            🥈
+          {% elif forloop.counter == 3 %}
+            🥉
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
