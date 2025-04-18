@@ -57,10 +57,10 @@ INSTALLED_APPS = [
     'social',
     'profiles.apps.ProfilesConfig',
     'workoutlog',
-    'trainers',
     'groups',
     'workouts',
-
+    'events',
+    'trainers',
 ]
 
 
