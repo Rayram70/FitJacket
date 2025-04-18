@@ -60,7 +60,8 @@ INSTALLED_APPS = [
     'groups',
     'workouts',
     'events',
-    'trainers',
+    'leaderboard',
+    'trainers'
 ]
 
 
