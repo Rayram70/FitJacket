@@ -25,6 +25,11 @@ urlpatterns = [
 
         path('accounts/', include('allauth.urls')),
 
+        path('trainers/', include('trainers.urls')),
+
+
+
+
 
 
 

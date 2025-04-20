@@ -22,10 +22,11 @@
           <ul class="navbar-nav me-auto">
             {% if user.profile.role == 'trainer' %}
               <li class="nav-item">
-                <a class="nav-link" href="#">Trainer Dashboard</a>
+                <a class="nav-link" href="{% url 'trainer_dashboard' %}">My Bookings</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Client Progress</a>
+                  <a class="nav-link" href="#">Client Progress</a>
+
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'workout_create' %}">Log Workout</a>
@@ -38,7 +39,7 @@
                 <a class="nav-link" href="{% url 'user_dashboard' %}">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Feed</a>
+                <a class="nav-link" href="{% url 'trainer_feed' %}">Find Trainers</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Groups</a>
@@ -60,7 +61,7 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="{}">Profile</a>
+              <a class="nav-link" href="#">Profile</a>
             </li>
 
             <li class="nav-item">

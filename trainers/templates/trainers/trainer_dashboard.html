@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Trainer Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-light">
+  <h2 class="mb-4">My Bookings</h2>
+
+  {% if sessions %}
+    <ul class="list-group">
+      {% for session in sessions %}
+        <li class="list-group-item bg-dark text-light mb-2">
+          {{ session.date }} at {{ session.time_slot }} with {{ session.user.username }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No upcoming sessions.</p>
+  {% endif %}
+</div>
+{% endblock %}
