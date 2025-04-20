@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Feed | Fitjacket{% endblock %}
+
+{% block content %}
+  <section class="container py-5 text-light">
+    <h2 class="mb-4">Trainer Feed</h2>
+
+    {% for trainer in trainers %}
+      <div class="card bg-dark text-light mb-3">
+        <div class="card-body">
+          <p class="card-text">{{ trainer.bio }}</p>
+
+          <p class="card-text"><strong>Specialties:</strong> {{ trainer.specialties }}</p>
+          <p class="card-text"><strong>Availability:</strong> {{ trainer.available_times }}</p>
+          <p class="card-text"><strong>Rate:</strong> ${{ trainer.rate }} / hour</p>
+
+          <a href="{% url 'trainer_detail' trainer.id %}" class="btn btn-outline-light">View Profile</a>
+          <a href="{% url 'book_session' trainer.id %}" class="btn btn-red ms-2">Book Session</a>
+        </div>
+      </div>
+    {% empty %}
+      <p>No trainers available at the moment.</p>
+    {% endfor %}
+  </section>
+{% endblock %}

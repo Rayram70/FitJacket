@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ trainer.user.get_full_name|default:trainer.user.username }} | Fitjacket{% endblock %}
+
+{% block content %}
+  <section class="container py-5 text-light">
+    <h2 class="mb-4">
+      {{ trainer.user.get_full_name|default:trainer.user.username }}
+    </h2>
+
+    <div class="card bg-dark text-light">
+      <div class="card-body">
+        <p class="card-text">{{ trainer.bio }}</p>
+
+        <p class="card-text"><strong>Specialties:</strong> {{ trainer.specialties }}</p>
+        <p class="card-text"><strong>Availability:</strong> {{ trainer.available_times }}</p>
+        <p class="card-text"><strong>Rate:</strong> ${{ trainer.rate }} / hour</p>
+
+        <a href="{% url 'book_session' trainer.id %}" class="btn btn-red">Book a Session</a>
+      </div>
+    </div>
+  </section>
+{% endblock %}

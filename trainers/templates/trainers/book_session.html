@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Book Session with {{ trainer.user.get_full_name|default:trainer.user.username }}{% endblock %}
+
+{% block content %}
+<section class="container py-5 text-light">
+  <h2 class="mb-4">Book a Session</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="card bg-dark text-light mb-4">
+    <div class="card-body">
+      <p><strong>Availability:</strong> {{ trainer.available_times }}</p>
+    </div>
+  </div>
+
+  <form method="post" class="text-light">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      {{ form.date.label_tag }}
+      {{ form.date }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.time_slot.label_tag }}
+      {% for radio in form.time_slot %}
+        <div class="form-check">
+          {{ radio.tag }} {{ radio.choice_label }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-red">Confirm Booking</button>
+  </form>
+</section>
+{% endblock %}

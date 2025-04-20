@@ -23,15 +23,14 @@ urlpatterns = [
         path('admin/', admin.site.urls),
         path('', include('home.urls')),
 
-        path('workouts/', include('workoutlog.urls')),
+        
 
         path('accounts/', include('allauth.urls')),
         path('', include('profiles.urls')),
-    
+  
         path('groups/', include('groups.urls')),
-
+        path('trainers/', include('trainers.urls')),
         path('workouts/', include('workouts.urls', namespace='workouts')),
-
         path('social/', include('social.urls')),
 
 
