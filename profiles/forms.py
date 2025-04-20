@@ -1,5 +1,7 @@
 from allauth.account.forms import SignupForm
 from django import forms
+from .models import Profile
+
 
 from trainers.models import Trainer  # Add this import at the top
 
@@ -22,3 +24,10 @@ class CustomSignupForm(SignupForm):
             Trainer.objects.create(user=user)
 
         return user
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar', 'bio' ]
+        widgets = {
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; padding: 1.5rem;">
+  <h2 style="font-size: 1.5rem; font-weight: bold;">Create a New Workout Group</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit"
+      style="background-color: #f94144; border: none; padding: 0.5rem 1rem; border-radius: 6px; color: white; cursor: pointer;">
+      Create Group
+    </button>
+  </form>
+</div>
+{% endblock %}
