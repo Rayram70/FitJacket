@@ -33,6 +33,8 @@ urlpatterns = [
         path('workouts/', include('workouts.urls', namespace='workouts')),
         path('social/', include('social.urls')),
 
+        path('log/', include('workoutlog.urls', namespace='workoutlog')),
+
 
 
 ]

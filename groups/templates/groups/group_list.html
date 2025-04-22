@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load custom_filters %}
+{% load trainers_tags %}
 
 {% block content %}
 <div style="max-width: 600px; margin: 0 auto; padding: 1.5rem;">
@@ -7,7 +7,7 @@
 
   <!-- Create New Group Button -->
   <div style="margin-bottom: 1rem;">
-    <a href="{% url 'create_group' %}"
+    <a href="{% url 'groups:create_group' %}"
        style="color: white; background-color: #f94144; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none;">
       + Create New Group
     </a>
@@ -35,7 +35,7 @@
           {% if group.id in user_memberships %}
             <!-- Already joined -->
             <span style="color: #90ee90; font-weight: bold;">✓ Joined</span>
-            <form method="post" action="{% url 'leave_group' group.id %}" style="margin-top: 0.5rem;">
+            <form method="post" action="{% url 'groups:leave_group' group.id %}" style="margin-top: 0.5rem;">
               {% csrf_token %}
               <button style="background-color: #6c757d; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; color: white; cursor: pointer;">
                 Leave Group
@@ -43,7 +43,7 @@
             </form>
           {% else %}
             <!-- Not a member -->
-            <form method="post" action="{% url 'join_group' group.id %}">
+            <form method="post" action="{% url 'groups:join_group' group.id %}">
               {% csrf_token %}
               <button style="background-color: #00b4d8; border: none; padding: 0.5rem 1rem; border-radius: 6px; color: white; cursor: pointer;">
                 Join Group

@@ -26,7 +26,7 @@ def trainer_profile(request):
         form = TrainerProfileForm(request.POST, instance=trainer)
         if form.is_valid():
             form.save()
-            return redirect('trainer_profile')
+            return redirect('trainers:trainer_profile')
     else:
         form = TrainerProfileForm(instance=trainer)
 
@@ -52,7 +52,7 @@ def book_session(request, trainer_id):
                 time_slot=form.cleaned_data['time_slot']
             )
             messages.success(request, "Session booked successfully!")
-            return redirect('book_session', trainer_id=trainer.id)
+            return redirect('trainer:book_session', trainer_id=trainer.id)
     else:
         form = BookingForm()
 
