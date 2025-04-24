@@ -12,6 +12,4 @@ urlpatterns = [
     path('dashboard/', views.trainer_dashboard, name='trainer_dashboard'),
 
 
-
-
 ]

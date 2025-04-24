@@ -2,19 +2,31 @@
 {% block title %}Trainer Dashboard{% endblock %}
 
 {% block content %}
-<div class="container py-5 text-light">
-  <h2 class="mb-4">My Bookings</h2>
+<section class="py-5 bg-black text-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="display-5 fw-bold">My Bookings</h2>
+      <p class="lead">Here are all your upcoming sessions:</p>
+    </div>
 
-  {% if sessions %}
-    <ul class="list-group">
-      {% for session in sessions %}
-        <li class="list-group-item bg-dark text-light mb-2">
-          {{ session.date }} at {{ session.time_slot }} with {{ session.user.username }}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No upcoming sessions.</p>
-  {% endif %}
-</div>
+    {% if sessions %}
+      <div class="row justify-content-center g-4">
+        {% for session in sessions %}
+          <div class="col-md-6 col-lg-5">
+            <div class="card border-0 rounded-4 h-100 shadow" style="background-color: #ff0b50;">
+              <div class="card-body text-white">
+                <h5 class="fw-bold mb-2">{{ session.date }} at {{ session.time_slot }}</h5>
+                <p class="mb-0">with <span class="fw-semibold">{{ session.user.username }}</span></p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center mt-5">
+        <p class="text-muted fs-5">No upcoming sessions.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
 {% endblock %}

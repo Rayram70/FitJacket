@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
 class Trainer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
@@ -24,5 +23,13 @@ class SessionBooking(models.Model):
         return f"{self.user.username} booked {self.trainer.user.username} on {self.date} at {self.time_slot}"
 
 
+class TrainerComment(models.Model):
+    trainer = models.ForeignKey('Trainer', on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment by {self.user.username} on {self.trainer.user.username}"
 
 

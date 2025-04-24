@@ -3,15 +3,14 @@
 
 from .forms import TrainerProfileForm
 from .models import Trainer
-
 from django.http import HttpResponseForbidden
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import BookingForm
 from .models import SessionBooking
-
 from django.contrib.auth.decorators import login_required
-
+from .forms import TrainerCommentForm
+from .models import TrainerComment
 
 
 @login_required
@@ -36,8 +35,24 @@ def trainer_profile(request):
 
 def trainer_detail(request, trainer_id):
     trainer = get_object_or_404(Trainer, id=trainer_id)
-    return render(request, 'trainers/trainer_detail.html', {'trainer': trainer})
+    comments = trainer.comments.select_related('user').order_by('-created_at')
 
+    if request.method == 'POST':
+        form = TrainerCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.trainer = trainer
+            comment.user = request.user
+            comment.save()
+            return redirect('trainers:trainer_detail', trainer_id=trainer.id)
+    else:
+        form = TrainerCommentForm()
+
+    return render(request, 'trainers/trainer_detail.html', {
+        'trainer': trainer,
+        'form': form,
+        'comments': comments,
+    })
 
 def book_session(request, trainer_id):
     trainer = get_object_or_404(Trainer, id=trainer_id)
@@ -52,7 +67,8 @@ def book_session(request, trainer_id):
                 time_slot=form.cleaned_data['time_slot']
             )
             messages.success(request, "Session booked successfully!")
-            return redirect('trainer:book_session', trainer_id=trainer.id)
+            return redirect('trainers:book_session', trainer_id=trainer.id)
+
     else:
         form = BookingForm()
 
@@ -70,4 +86,5 @@ def trainer_dashboard(request):
     return render(request, 'trainers/trainer_dashboard.html', {
         'sessions': sessions
     })
+
 
