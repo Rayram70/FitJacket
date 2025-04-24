@@ -23,8 +23,6 @@ urlpatterns = [
         path('admin/', admin.site.urls),
         path('', include('home.urls')),
 
-        path('workouts/', include('workoutlog.urls')),
-
         path('accounts/', include('allauth.urls')),
         path('', include('profiles.urls')),
     
@@ -39,6 +37,8 @@ urlpatterns = [
         path('leaderboard/', include('leaderboard.urls')),
 
         path('log/', include('workoutlog.urls', namespace='workoutlog')),
+
+        path('trainers/', include('trainers.urls', namespace='trainers')),
 
 
 
