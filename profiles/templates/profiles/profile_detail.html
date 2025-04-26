@@ -16,6 +16,6 @@
   <p><strong>Role:</strong> {{ profile.get_role_display }}</p>
   <p><strong>Bio:</strong><br>{{ profile.bio|linebreaksbr }}</p>
 
-  <a href="{% url 'profile_edit' %}" class="btn btn-outline-light mt-2">Edit Profile</a>
+  <a href="{% url 'profiles:profile_edit' %}" class="btn btn-outline-light mt-2">Edit Profile</a>
 </div>
 {% endblock %}
