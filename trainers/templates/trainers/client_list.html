@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}My Clients{% endblock %}
+
+{% block content %}
+<h2 class="text-white mb-4">👥 My Clients</h2>
+
+{% if clients %}
+  <ul class="list-group">
+    {% for client in clients %}
+      <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-light">
+        <div>
+          <strong>{{ client.user.username }}</strong>
+        </div>
+
+        <div class="d-flex gap-2">
+          <a href="{% url 'trainers:client_dashboard' client.id %}" class="btn btn-outline-primary btn-sm">View Dashboard</a>
+
+          <form method="post" action="{% url 'profiles:remove_client' client.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+          </form>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p class="text-muted">You don't have any clients yet.</p>
+{% endif %}
+{% endblock %}

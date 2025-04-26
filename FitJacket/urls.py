@@ -34,6 +34,8 @@ urlpatterns = [
         path('social/', include('social.urls')),
 
         path('log/', include('workoutlog.urls', namespace='workoutlog')),
+        path('messages/', include('messaging.urls', namespace='messaging')),
+
 
 
 

@@ -3,7 +3,7 @@ from django import forms
 from .models import Profile
 
 
-from trainers.models import Trainer  # Add this import at the top
+
 
 class CustomSignupForm(SignupForm):
     ROLE_CHOICES = (
@@ -19,15 +19,15 @@ class CustomSignupForm(SignupForm):
         user.profile.role = role
         user.profile.save()
 
-        # ✅ If the role is trainer, create a Trainer instance
-        if role == 'trainer':
-            Trainer.objects.create(user=user)
 
         return user
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['avatar', 'bio' ]
+        fields = ['avatar', 'bio', 'specialties', 'rate', 'available_times']
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'specialties': forms.TextInput(attrs={'class': 'form-control'}),
+            'rate': forms.NumberInput(attrs={'class': 'form-control'}),
+            'available_times': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }

@@ -27,11 +27,6 @@
           <a href="{% url 'workouts:video_list' %}" class="btn btn-outline-light btn-lg px-4 py-2 shadow-sm">
             Explore Workouts
           </a>
-          {% if user.trainer %}
-            <a href="{% url 'trainers:trainer_profile' %}" class="btn btn-dark btn-lg px-4 py-2 shadow-sm">
-              Update Trainer Profile
-            </a>
-          {% endif %}
         </div>
 
       {% else %}

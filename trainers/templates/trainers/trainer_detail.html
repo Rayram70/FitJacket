@@ -12,13 +12,38 @@
 
         <p class="card-text">{{ trainer.bio }}</p>
 
-        <p class="card-text"><strong>Specialties:</strong> {{ trainer.specialties }}</p>
-        <p class="card-text"><strong>Availability:</strong> {{ trainer.available_times }}</p>
-        <p class="card-text"><strong>Rate:</strong> ${{ trainer.rate }} / hour</p>
+        {% if trainer.specialties %}
+          <p class="card-text"><strong>Specialties:</strong> {{ trainer.specialties }}</p>
+        {% endif %}
+
+        {% if trainer.available_times %}
+          <p class="card-text"><strong>Availability:</strong> {{ trainer.available_times }}</p>
+        {% endif %}
+
+        {% if trainer.rate %}
+          <p class="card-text"><strong>Rate:</strong> ${{ trainer.rate }} / hour</p>
+        {% endif %}
 
         <div class="d-flex flex-wrap gap-2 mt-3">
-          <a href="{% url 'trainers:book_session' trainer.id %}" class="btn btn-red">Book a Session</a>
+          <a href="{% url 'trainers:book_session' trainer.id %}" class="btn btn-red">📅 Book a Session</a>
+
+          {% if user.is_authenticated and user.profile.role == 'user' %}
+            {% if user.profile.connected_trainer == trainer %}
+              <form method="post" action="{% url 'profiles:disconnect_trainer' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">❌ Disconnect</button>
+              </form>
+            {% elif not user.profile.connected_trainer %}
+              <form method="post" action="{% url 'trainers:connect_trainer' trainer.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-light">🤝 Connect with Trainer</button>
+              </form>
+            {% else %}
+              <span class="badge bg-warning text-dark">Already connected to another trainer</span>
+            {% endif %}
+          {% endif %}
         </div>
+
       </div>
     </div>
 

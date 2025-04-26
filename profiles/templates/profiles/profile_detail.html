@@ -1,6 +1,4 @@
 {% extends "base.html" %}
-{% block title %}My Profile{% endblock %}
-
 {% block content %}
 <h2 class="text-white">My Profile</h2>
 
@@ -16,6 +14,36 @@
   <p><strong>Role:</strong> {{ profile.get_role_display }}</p>
   <p><strong>Bio:</strong><br>{{ profile.bio|linebreaksbr }}</p>
 
-  <a href="{% url 'profiles:profile_edit' %}" class="btn btn-outline-light mt-2">Edit Profile</a>
+  {# --- Trainer Specific Info --- #}
+  {% if profile.role == 'trainer' %}
+    <hr>
+    <h5 class="text-info mt-3">Trainer Info</h5>
+    <p><strong>Specialties:</strong> {{ profile.specialties }}</p>
+    <p><strong>Rate:</strong> ${{ profile.rate }}</p>
+    <p><strong>Available Times:</strong><br>{{ profile.available_times|linebreaksbr }}</p>
+  {% endif %}
+
+  {# --- Connected Trainer for Users --- #}
+  {% if profile.role == 'user' %}
+    <hr>
+    <h5 class="text-info mt-3">Connected Trainer</h5>
+
+    {% if profile.connected_trainer %}
+      <p><strong>Trainer:</strong>
+        <a href="{% url 'profiles:public_profile' profile.connected_trainer.user.username %}" class="text-light">
+          {{ profile.connected_trainer.user.username }}
+        </a>
+      </p>
+
+      <form method="post" action="{% url 'profiles:disconnect_trainer' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-sm">Disconnect Trainer</button>
+      </form>
+    {% else %}
+      <p class="text-muted">You are not connected with any trainer yet.</p>
+    {% endif %}
+  {% endif %}
+
+  <a href="{% url 'profiles:profile_edit' %}" class="btn btn-outline-light mt-3">Edit Profile</a>
 </div>
 {% endblock %}

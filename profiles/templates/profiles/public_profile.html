@@ -13,18 +13,18 @@
   {% endif %}
 
   <h2>{{ user_profile.username }}</h2>
+
   {% if profile.bio %}
     <p class="text-muted">{{ profile.bio }}</p>
   {% endif %}
 
+  <!-- FRIEND SYSTEM -->
   {% if user != user_profile %}
     <div class="mt-3">
       {% if user|are_friends:user_profile %}
         <span class="badge bg-success">✅ You’re friends</span>
-
       {% elif user|has_sent_friend_request:user_profile %}
         <span class="text-muted">Friend request sent</span>
-
       {% elif user|has_received_friend_request:user_profile %}
         {% for req in user.received_requests.all %}
           {% if req.from_user == user_profile and not req.accepted %}
@@ -39,11 +39,26 @@
             </form>
           {% endif %}
         {% endfor %}
-
       {% else %}
         <a href="{% url 'social:send_friend_request' user_profile.id %}" class="btn btn-outline-light btn-sm">Add Friend</a>
       {% endif %}
     </div>
   {% endif %}
+
+  <!-- TRAINER CONNECTION SYSTEM -->
+  {% if user.is_authenticated and user.profile.role == 'user' and user_profile.role == 'trainer' %}
+    <div class="mt-4">
+      {% if not user.profile.connected_trainer %}
+        <a href="{% url 'profiles:connect_trainer' user_profile.id %}" class="btn btn-primary btn-sm">
+          Connect with Trainer
+        </a>
+      {% elif user.profile.connected_trainer == user_profile %}
+        <span class="badge bg-primary">✅ Connected with Trainer</span>
+      {% else %}
+        <span class="text-muted small">You are already connected to another trainer.</span>
+      {% endif %}
+    </div>
+  {% endif %}
+
 </div>
 {% endblock %}
