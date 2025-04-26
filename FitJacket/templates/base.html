@@ -31,14 +31,14 @@
                 <a class="nav-link" href="{% url 'workoutlog:workout_create' %}">Log Workout</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Post Service</a> {# Add actual URL when implemented #}
+                <a class="nav-link disabled" href="#">Post Service</a>
               </li>
             {% else %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'workoutlog:user_dashboard' %}">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'trainers:trainer_detail' trainer_id=user.id %}">Find Trainers</a>
+                <a class="nav-link" href="{}">Find Trainers</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'social:feed' %}">Feed</a>
@@ -71,8 +71,9 @@
                 {% endif %}
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                <li><a class="dropdown-item" href="{% url 'profile_detail' %}">View Profile</a></li>
-                <li><a class="dropdown-item" href="{% url 'profile_edit' %}">Edit Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'profiles:profile_detail' %}">View Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'profiles:profile_edit' %}">Edit Profile</a></li>
+                  <li><a class="dropdown-item" href="{% url 'social:friends_list' %}">Friends</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item text-danger" href="{% url 'account_logout' %}">Logout</a></li>
               </ul>
