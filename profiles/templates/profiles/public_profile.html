@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% load friend_tags %}
+
+{% block title %}{{ user_profile.username }}'s Profile{% endblock %}
+
+{% block content %}
+<div class="text-center">
+  {% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}" class="rounded-circle mb-3" width="120" height="120" style="object-fit: cover;">
+  {% else %}
+    <img src="{% static 'img/default-avatar.png' %}" class="rounded-circle mb-3" width="120" height="120" alt="Default Avatar">
+  {% endif %}
+
+  <h2>{{ user_profile.username }}</h2>
+
+  {% if profile.bio %}
+    <p class="text-muted">{{ profile.bio }}</p>
+  {% endif %}
+
+  <!-- FRIEND SYSTEM -->
+  {% if user != user_profile %}
+    <div class="mt-3">
+      {% if user|are_friends:user_profile %}
+        <span class="badge bg-success">✅ You’re friends</span>
+      {% elif user|has_sent_friend_request:user_profile %}
+        <span class="text-muted">Friend request sent</span>
+      {% elif user|has_received_friend_request:user_profile %}
+        {% for req in user.received_requests.all %}
+          {% if req.from_user == user_profile and not req.accepted %}
+            <form method="post" action="{% url 'social:accept_friend_request' req.id %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-success">Accept</button>
+            </form>
+
+            <form method="post" action="{% url 'social:decline_friend_request' req.id %}" class="d-inline ms-2">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-secondary">Decline</button>
+            </form>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <a href="{% url 'social:send_friend_request' user_profile.id %}" class="btn btn-outline-light btn-sm">Add Friend</a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <!-- TRAINER CONNECTION SYSTEM -->
+  {% if user.is_authenticated and user.profile.role == 'user' and user_profile.role == 'trainer' %}
+    <div class="mt-4">
+      {% if not user.profile.connected_trainer %}
+        <a href="{% url 'profiles:connect_trainer' user_profile.id %}" class="btn btn-primary btn-sm">
+          Connect with Trainer
+        </a>
+      {% elif user.profile.connected_trainer == user_profile %}
+        <span class="badge bg-primary">✅ Connected with Trainer</span>
+      {% else %}
+        <span class="text-muted small">You are already connected to another trainer.</span>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

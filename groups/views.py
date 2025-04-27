@@ -13,7 +13,7 @@ def create_group(request):
             group.created_by = request.user
             group.save()
             GroupMembership.objects.create(user=request.user, group=group)
-            return redirect('group_list')
+            return redirect('groups:group_list')
     else:
         form = WorkoutGroupForm()
     return render(request, 'groups/create_group.html', {'form': form})
@@ -24,7 +24,7 @@ def join_group(request, group_id):
     GroupMembership.objects.get_or_create(user=request.user, group=group)
 
     # Redirect back to the group list instead of group detail
-    return redirect('group_list')
+    return redirect('groups:group_list')
 
 @login_required
 def group_detail(request, group_id):
@@ -53,4 +53,4 @@ def group_list(request):
 def leave_group(request, group_id):
     group = get_object_or_404(WorkoutGroup, id=group_id)
     GroupMembership.objects.filter(user=request.user, group=group).delete()
-    return redirect('group_list')
+    return redirect('groups:group_list')

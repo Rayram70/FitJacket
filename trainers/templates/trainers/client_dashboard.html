@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ client.user.username }}'s Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="text-white mb-4">{{ client.user.username }}'s Workout Dashboard</h2>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card bg-dark text-light p-3 mb-4">
+      <h5>Total Workouts This Month</h5>
+      <p class="fs-4">{{ total_workouts_month }}</p>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card bg-dark text-light p-3 mb-4">
+      <h5>Total Duration This Month</h5>
+      <p class="fs-4">{{ total_minutes_month }} minutes</p>
+    </div>
+  </div>
+</div>
+
+<div class="card bg-dark text-light p-4 mb-4">
+  <h5 class="mb-3">Monthly Workouts Trend</h5>
+  <canvas id="workoutChart"></canvas>
+</div>
+
+<div class="card bg-dark text-light p-4">
+  <h5 class="mb-3">Workout History</h5>
+  {% if workouts %}
+    <ul class="list-group list-group-flush">
+      {% for workout in workouts %}
+        <li class="list-group-item bg-dark text-light border-secondary">
+          <strong>{{ workout.date }}</strong>: {{ workout.name }} ({{ workout.duration }} minutes)
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">No workouts logged yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('workoutChart').getContext('2d');
+
+const chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: {{ chart_labels|safe }},
+    datasets: [{
+      label: 'Workouts',
+      data: {{ chart_data|safe }},
+      backgroundColor: 'rgba(255, 75, 75, 0.2)',
+      borderColor: 'rgba(255, 75, 75, 1)',
+      borderWidth: 2,
+      tension: 0.3,
+      fill: true,
+    }]
+  },
+  options: {
+    scales: {
+      y: { beginAtZero: true }
+    }
+  }
+});
+</script>
+{% endblock %}

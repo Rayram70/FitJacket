@@ -2,11 +2,47 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block content %}
-<h2 class="text-white">Edit Profile</h2>
+<h2 class="text-white mb-4">Edit Profile</h2>
 
-<form method="post" enctype="multipart/form-data" class="text-light">
+<form method="post" enctype="multipart/form-data" class="card bg-dark text-light p-4 shadow-sm">
   {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-red mt-3">Save Changes</button>
+
+  <!-- Avatar Upload -->
+  <div class="mb-3">
+    <label class="form-label">Avatar</label><br>
+    {{ form.avatar }}
+  </div>
+
+  <!-- Bio -->
+  <div class="mb-3">
+    <label class="form-label">Bio</label>
+    {{ form.bio }}
+  </div>
+
+  {% if user.profile.role == 'trainer' %}
+    <hr class="text-secondary">
+
+    <h5 class="text-info mt-3">Trainer Info</h5>
+
+    <!-- Specialties -->
+    <div class="mb-3">
+      <label class="form-label">Specialties</label>
+      {{ form.specialties }}
+    </div>
+
+    <!-- Rate -->
+    <div class="mb-3">
+      <label class="form-label">Rate ($/hour)</label>
+      {{ form.rate }}
+    </div>
+
+    <!-- Available Times -->
+    <div class="mb-3">
+      <label class="form-label">Available Times</label>
+      {{ form.available_times }}
+    </div>
+  {% endif %}
+
+  <button type="submit" class="btn btn-outline-light mt-3">Save Changes</button>
 </form>
 {% endblock %}
