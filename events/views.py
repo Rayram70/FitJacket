@@ -3,11 +3,11 @@ from .models import Event
 from django.contrib.auth.decorators import login_required
 
 def event_list(request):
-    events = Event.objects.all().order_by('date')
+    events = Event.objects.all()
     return render(request, 'events/event_list.html', {'events': events})
 
-def event_detail(request, event_id):
-    event = get_object_or_404(Event, id=event_id)
+def event_detail(request, pk):
+    event = get_object_or_404(Event, pk=pk)
     return render(request, 'events/event_detail.html', {'event': event})
 
 def join_event(request, event_id):

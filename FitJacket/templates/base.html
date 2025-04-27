@@ -40,6 +40,7 @@
               <a class="nav-link" href="{% url 'trainer_feed' %}">Find Trainers</a>
             </li>
           {% endif %}
+
           <li class="nav-item">
             <a class="nav-link" href="{% url 'social:create_post' %}">Create Post</a>
           </li>
@@ -48,6 +49,13 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'groups:group_list' %}">Groups</a>
+          </li>
+          <!-- Added Leaderboard and Events here -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'leaderboard' %}">Leaderboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'events:event_list' %}">Events</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'home.index' %}#about">About</a>
@@ -62,7 +70,7 @@
             </a>
           </li>
 
-          <!-- Profile -->
+          <!-- Profile Dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
               {% if user.profile.avatar %}

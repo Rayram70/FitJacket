@@ -32,13 +32,15 @@ urlpatterns = [
 
         path('social/', include('social.urls')),
 
-        path('events/', include('events.urls')),
+        path('events/', include(('events.urls', 'events'), namespace='events')),
 
         path('leaderboard/', include('leaderboard.urls')),
 
         path('log/', include('workoutlog.urls', namespace='workoutlog')),
 
         path('messages/', include('messaging.urls', namespace='messaging')),
+
+        path('trainers/', include(('trainers.urls', 'trainers'), namespace='trainers')),
 
 
 
