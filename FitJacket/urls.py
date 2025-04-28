@@ -23,17 +23,27 @@ urlpatterns = [
         path('admin/', admin.site.urls),
         path('', include('home.urls')),
 
-        
-
         path('accounts/', include('allauth.urls')),
         path('', include('profiles.urls')),
-  
+    
         path('groups/', include('groups.urls')),
-        path('trainers/', include('trainers.urls')),
+
         path('workouts/', include('workouts.urls', namespace='workouts')),
+
         path('social/', include('social.urls')),
 
+        path('events/', include(('events.urls', 'events'), namespace='events')),
+
+        path('leaderboard/', include('leaderboard.urls')),
+
         path('log/', include('workoutlog.urls', namespace='workoutlog')),
+
+        path('messages/', include('messaging.urls', namespace='messaging')),
+        path('workoutplans/', include('workoutplans.urls', namespace='workoutplans')),
+
+        path('trainers/', include(('trainers.urls', 'trainers'), namespace='trainers')),
+
+        path('', include('home.urls')),
 
 
 

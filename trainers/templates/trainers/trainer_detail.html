@@ -1,24 +1,80 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ trainer.user.get_full_name|default:trainer.user.username }} | Fitjacket{% endblock %}
+{% block title %}{{ trainer.user.username }} | Trainer Profile{% endblock %}
 
 {% block content %}
-  <section class="container py-5 text-light">
-    <h2 class="mb-4">
-      {{ trainer.user.get_full_name|default:trainer.user.username }}
-    </h2>
-
-    <div class="card bg-dark text-light">
+<section class="py-5 text-light" style="background: linear-gradient(135deg, #1f1f1f, #3a3a3a); min-height: 100vh;">
+  <div class="container">
+    <div class="card bg-dark text-light border-0 shadow-lg rounded-4 mb-4">
       <div class="card-body">
+        <h2 class="fw-bold mb-3">{{ trainer.user.username }}</h2>
+
         <p class="card-text">{{ trainer.bio }}</p>
 
-        <p class="card-text"><strong>Specialties:</strong> {{ trainer.specialties }}</p>
-        <p class="card-text"><strong>Availability:</strong> {{ trainer.available_times }}</p>
-        <p class="card-text"><strong>Rate:</strong> ${{ trainer.rate }} / hour</p>
+        {% if trainer.specialties %}
+          <p class="card-text"><strong>Specialties:</strong> {{ trainer.specialties }}</p>
+        {% endif %}
 
-        <a href="{% url 'book_session' trainer.id %}" class="btn btn-red">Book a Session</a>
+        {% if trainer.available_times %}
+          <p class="card-text"><strong>Availability:</strong> {{ trainer.available_times }}</p>
+        {% endif %}
+
+        {% if trainer.rate %}
+          <p class="card-text"><strong>Rate:</strong> ${{ trainer.rate }} / hour</p>
+        {% endif %}
+
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <a href="{% url 'trainers:book_session' trainer.id %}" class="btn btn-red">📅 Book a Session</a>
+
+          {% if user.is_authenticated and user.profile.role == 'user' %}
+            {% if user.profile.connected_trainer == trainer %}
+              <form method="post" action="{% url 'profiles:disconnect_trainer' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">❌ Disconnect</button>
+              </form>
+            {% elif not user.profile.connected_trainer %}
+              <form method="post" action="{% url 'trainers:connect_trainer' trainer.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-light">🤝 Connect with Trainer</button>
+              </form>
+            {% else %}
+              <span class="badge bg-warning text-dark">Already connected to another trainer</span>
+            {% endif %}
+          {% endif %}
+        </div>
+
       </div>
     </div>
-  </section>
+
+    <div class="mt-5">
+      <h4 class="text-white mb-3">Reviews</h4>
+
+      {% for comment in comments %}
+        <div class="mb-4 p-3 bg-secondary bg-opacity-25 rounded-3">
+          <strong>{{ comment.user.username }}</strong>
+          <small class="text-light d-block">{{ comment.created_at|date:"M d, Y H:i" }}</small>
+          <p class="mb-0">{{ comment.content }}</p>
+        </div>
+      {% empty %}
+        <p class="text-muted">No reviews yet. Be the first to leave one!</p>
+      {% endfor %}
+
+      {% if user.is_authenticated %}
+        <form method="post" class="mt-4">
+          {% csrf_token %}
+          <div class="mb-3">
+            {{ form.content.label_tag }}
+            {{ form.content }}
+          </div>
+          <button type="submit" class="btn btn-outline-light btn-sm">Post Review</button>
+        </form>
+      {% else %}
+        <p class="text-light mt-3">
+          You must <a href="{% url 'account_login' %}" class="text-white">log in</a> to leave a review.
+        </p>
+      {% endif %}
+    </div>
+  </div>
+</section>
 {% endblock %}

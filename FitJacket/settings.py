@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 
 from django.urls import reverse_lazy
+from decouple import config
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -57,9 +59,14 @@ INSTALLED_APPS = [
     'social',
     'profiles.apps.ProfilesConfig',
     'workoutlog',
-    'trainers',
     'groups',
     'workouts',
+    'events',
+    'leaderboard',
+    'messaging',
+    'trainers',
+    'workoutplans',
+
 
 ]
 
@@ -171,3 +178,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+OPENROUTER_API_KEY = config('OPENROUTER_API_KEY')
+DEEPSEEK_MODEL_ID = config('DEEPSEEK_MODEL_ID')
+OPENROUTER_API_URL = config('OPENROUTER_API_URL')
