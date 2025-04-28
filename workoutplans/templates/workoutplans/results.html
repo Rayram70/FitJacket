@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Your Custom Workout Plan{% endblock %}
+
+{% block content %}
+<div class="bg-dark p-4 rounded">
+  <h2 class="text-white mb-4">💪 Your AI-Generated Workout Plan</h2>
+
+  {% if plan %}
+    <div class="bg-secondary text-light p-3 rounded">
+      {% for line in plan.splitlines %}
+        {% if line %}
+          {% if "Goal:" in line %}
+            <h4 class="text-info mt-4">{{ line|cut:"Goal:" }}</h4>
+          {% elif "Duration:" in line %}
+            <h5 class="text-light mt-3">{{ line|cut:"Duration:" }}</h5>
+          {% elif "Weekly Schedule:" in line %}
+            <h5 class="text-light mt-4">🏋️ Weekly Schedule</h5>
+          {% elif "Exercises:" in line %}
+            <h5 class="text-light mt-4">🔥 Exercises</h5>
+          {% elif "Equipment Needed:" in line %}
+            <h5 class="text-light mt-4">🛠 Equipment Needed</h5>
+          {% elif "Pro Tips:" in line %}
+            <h5 class="text-light mt-4">💡 Pro Tips</h5>
+          {% elif "Safety Notes:" in line %}
+            <h5 class="text-light mt-4">⚠️ Safety Notes</h5>
+          {% else %}
+            <p>{{ line }}</p>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="mt-4 d-flex gap-2">
+    <form method="post" action="{% url 'workoutplans:save_plan' %}">
+        {% csrf_token %}
+        <input type="hidden" name="title" value="My Custom Plan">
+        <button type="submit" class="btn btn-success">💾 Save to My Plans</button>
+    </form>
+        <a href="{% url 'workoutplans:request' %}" class="btn btn-outline-light">Generate Another Plan</a>
+
+   </div>
+  {% else %}
+    <p class="text-muted">No plan available. Please generate one first.</p>
+  {% endif %}
+</div>
+{% endblock %}

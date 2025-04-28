@@ -5,7 +5,6 @@ class WorkoutForm(forms.ModelForm):
     class Meta:
         model = Workout
         fields = ['date', 'activity', 'duration', 'notes']
-
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'activity': forms.TextInput(attrs={'class': 'form-control'}),
@@ -14,8 +13,10 @@ class WorkoutForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        self.current_user = kwargs.pop('current_user')
+        self.current_user = kwargs.pop('current_user', None)  # <-- FIX: safely pop
         super().__init__(*args, **kwargs)
+
+        # You could later use self.current_user here if needed
 
 
 class GoalForm(forms.ModelForm):

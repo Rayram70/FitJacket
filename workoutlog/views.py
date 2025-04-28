@@ -3,25 +3,15 @@ from django.db.models import Count, Sum
 from django.shortcuts import render, redirect
 from django.db.models.functions import TruncMonth
 from django.utils.timezone import now
+
+
+
 from .forms import WorkoutForm, GoalForm
 from .models import Workout, Goal
 import calendar
+from workoutplans.models import WorkoutPlan  # ✅ you need this import
 
 @login_required
-def workout_create(request):
-    if request.method == 'POST':
-        form = WorkoutForm(request.POST, current_user=request.user)
-        if form.is_valid():
-            workout = form.save(commit=False)
-            workout.user = request.user  # set the logged-in user
-            workout.logged_by = request.user
-            workout.save()
-            return redirect('my_workouts')
-    else:
-        form = WorkoutForm(current_user=request.user)
-
-    return render(request, 'workoutlog/workout_form.html', {'form': form})
-
 def user_dashboard(request):
     workouts = Workout.objects.filter(user=request.user)
 
@@ -35,6 +25,9 @@ def user_dashboard(request):
             return redirect('user_dashboard')
     else:
         goal_form = GoalForm(instance=goal)
+
+    # ✅ Fetch saved workout plans for this user
+    saved_plans = WorkoutPlan.objects.filter(user=request.user).order_by('-created_at')
 
     # Chart + stats logic...
     monthly_data = (
@@ -79,11 +72,28 @@ def user_dashboard(request):
 
     return render(request, 'workoutlog/user_dashboard.html', {
         'stats': stats,
-        'goal_form': goal_form
+        'goal_form': goal_form,
+        'saved_plans': saved_plans,  # ✅ Pass it cleanly
     })
+
 
 
 
 def my_workouts(request):
     workouts = Workout.objects.filter(user=request.user).order_by('-date')
     return render(request, 'workoutlog/workout_list.html', {'workouts': workouts})
+
+@login_required
+def workout_create(request):
+    if request.method == 'POST':
+        form = WorkoutForm(request.POST)
+        if form.is_valid():
+            workout = form.save(commit=False)
+            workout.user = request.user
+            workout.logged_by = request.user
+            workout.save()
+            return redirect('workoutlog:my_workouts')
+    else:
+        form = WorkoutForm()
+
+    return render(request, 'workoutlog/workout_form.html', {'form': form})
