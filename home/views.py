@@ -6,9 +6,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import random
 
-@login_required
+
 def index(request):
-    unread_count = Message.objects.filter(recipient=request.user, is_read=False).count()
+    unread_count = 0
+    if request.user.is_authenticated:
+        unread_count = Message.objects.filter(recipient=request.user, is_read=False).count()
 
     return render(request, 'home/index.html', {
         'template_data': {
@@ -16,6 +18,7 @@ def index(request):
         },
         'unread_count': unread_count
     })
+
 
 def about(request):
     template_data = {}

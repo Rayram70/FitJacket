@@ -4,137 +4,126 @@
 {% block title %}Home | FitJacket{% endblock %}
 
 {% block head %}
-  <!-- Animation on Scroll -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-  <!-- Hero Section -->
-  <section class="text-center py-5" style="background: linear-gradient(135deg, #ff416c, #ff4b2b);">
-    <div class="container">
-      {% if user.is_authenticated %}
-        <h1 class="display-4 fw-bold text-white mb-3" data-aos="fade-down">
-          Welcome back, {{ user.first_name|default:user.username }}!
-        </h1>
-        <p class="lead text-light mb-4" data-aos="fade-up">
-          Ready to crush another workout?
-        </p>
 
-        <div class="d-flex flex-wrap justify-content-center gap-3" data-aos="fade-up" data-aos-delay="150">
+<!-- Hero Section -->
+<section class="text-center py-5" style="background: linear-gradient(135deg, #ff416c, #ff4b2b);">
+  <div class="container">
+    {% if user.is_authenticated %}
+      <h1 class="display-4 fw-bold text-white mb-3" data-aos="fade-down">
+        Welcome back, {{ user.first_name|default:user.username }}!
+      </h1>
+      <p class="lead text-light mb-4" data-aos="fade-up">
+        {% if user.profile.role == 'trainer' %}
+          Ready to coach and inspire others?
+        {% else %}
+          Ready to crush another workout?
+        {% endif %}
+      </p>
+
+      <div class="d-flex flex-wrap justify-content-center gap-3" data-aos="fade-up" data-aos-delay="150">
+        {% if user.profile.role != 'trainer' %}
           <a href="{% url 'workoutlog:workout_create' %}" class="btn btn-light btn-lg px-4 py-2 shadow-sm">
             Log a Workout
           </a>
           <a href="{% url 'workouts:video_list' %}" class="btn btn-outline-light btn-lg px-4 py-2 shadow-sm">
             Explore Workouts
           </a>
-        </div>
-
-      {% else %}
-        <h1 class="display-4 fw-bold text-white mb-3" data-aos="fade-up">
-          Track. Share. Improve.
-        </h1>
-        <p class="lead text-light mb-4" data-aos="fade-up" data-aos-delay="100">
-          FitJacket helps you stay on top of your fitness goals by tracking your workouts and progress.
-        </p>
-
-        <div class="d-flex justify-content-center gap-3" data-aos="fade-up" data-aos-delay="200">
-          <a href="{% url 'home.about' %}" class="btn btn-light btn-lg px-4 py-2 shadow-sm">
-            About Us
+        {% else %}
+          <a href="{% url 'trainers:trainer_dashboard' %}" class="btn btn-light btn-lg px-4 py-2 shadow-sm">
+            View Bookings
           </a>
-          <a href="{% url 'account_login' %}" class="btn btn-outline-light btn-lg px-4 py-2 shadow-sm">
-            Log In
+          <a href="{% url 'trainers:client_list' %}" class="btn btn-outline-light btn-lg px-4 py-2 shadow-sm">
+            Clients
           </a>
-        </div>
-      {% endif %}
-    </div>
-  </section>
+        {% endif %}
+      </div>
 
+    {% else %}
+      <h1 class="display-4 fw-bold text-white mb-3" data-aos="fade-up">
+        Track. Share. Improve.
+      </h1>
+      <p class="lead text-light mb-4" data-aos="fade-up" data-aos-delay="100">
+        FitJacket helps you stay on top of your fitness goals by tracking your workouts and connecting you with coaches.
+      </p>
 
+      <div class="d-flex justify-content-center gap-3" data-aos="fade-up" data-aos-delay="200">
+        <a href="{% url 'home.about' %}" class="btn btn-light btn-lg px-4 py-2 shadow-sm">
+          About Us
+        </a>
+        <a href="{% url 'account_login' %}" class="btn btn-outline-light btn-lg px-4 py-2 shadow-sm">
+          Log In
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
 
-
-  <!-- Feature Section -->
-  <section class="py-5 bg-black">
-    <div class="container">
-      <div class="row text-center g-4">
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-          <div class="card bg-dark h-100 border-0 shadow rounded-4 text-white">
-            <div class="card-body">
-              <h3 class="text-red mb-3">Log Workouts</h3>
-              <p class="mb-0">Quickly add workouts with details like duration, intensity, and notes.</p>
-            </div>
+<!-- Feature Section -->
+<section class="py-5 bg-black">
+  <div class="container">
+    <div class="row text-center g-4">
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card bg-dark h-100 border-0 shadow rounded-4 text-white">
+          <div class="card-body">
+            <h3 class="text-red mb-3">Log Workouts</h3>
+            <p class="mb-0">Easily track your training sessions with duration, intensity, and notes.</p>
           </div>
         </div>
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-          <div class="card bg-dark h-100 border-0 shadow rounded-4 text-white">
-            <div class="card-body">
-              <h3 class="text-red mb-3">Track Progress</h3>
-              <p class="mb-0">Visualize your consistency and gains with timeline and stats.</p>
-            </div>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card bg-dark h-100 border-0 shadow rounded-4 text-white">
+          <div class="card-body">
+            <h3 class="text-red mb-3">Track Progress</h3>
+            <p class="mb-0">Visualize consistency with timelines, graphs, and milestone tracking.</p>
           </div>
         </div>
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
-          <div class="card bg-dark h-100 border-0 shadow rounded-4 text-white">
-            <div class="card-body">
-              <h3 class="text-red mb-3">Stay Motivated</h3>
-              <p class="mb-0">Set goals, track streaks, and push yourself further with FitJacket.</p>
-            </div>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="card bg-dark h-100 border-0 shadow rounded-4 text-white">
+          <div class="card-body">
+            <h3 class="text-red mb-3">Stay Motivated</h3>
+            <p class="mb-0">Set streaks, goals, and connect with others striving to improve.</p>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-    <!-- ABOUT SECTION FROM about.html -->
-<section class="py-5 text-center bg-black">
-  <div class="container">
-      <section id="about" class="py-5 text-white" style="background: linear-gradient(135deg);">
-    <h1 class="display-4 fw-bold text-white" data-aos="fade-up">Our Mission</h1>
-    <p class="lead text-light mb-4" data-aos="fade-up" data-aos-delay="100">
-      FitJacket is more than just a fitness app — it's a commitment to helping people stay consistent, motivated, and connected through every stage of their fitness journey.
+<!-- About Section -->
+<section id="about" class="py-5 text-center" style="background: linear-gradient(135deg, #333, #000);">
+  <div class="container text-white">
+    <h2 class="display-5 fw-bold" data-aos="fade-up">Our Mission</h2>
+    <p class="lead mb-4" data-aos="fade-up" data-aos-delay="100">
+      FitJacket is dedicated to helping people stay consistent, motivated, and connected on every step of their fitness journey.
     </p>
   </div>
 </section>
 
-<section class="py-5 text-white" style="background: linear-gradient(135deg, #716f6f);">
-
+<section class="py-5 text-white" style="background: linear-gradient(135deg, #555, #222);">
   <div class="container">
     <div class="row text-light">
-      <div class="col-md-6 mb-20" data-aos="fade-right">
-        <h3 class="text-red">Built for Lifters, Runners, and Everyone in Between</h3>
-        <p>
-          Whether you're training for a marathon, trying to hit a new PR, or just getting into a routine — FitJacket gives you the tools to plan, track, and reflect on your workouts.
-        </p>
-        <p>
-          Our platform is simple, intuitive, and designed to get out of your way — so you can stay focused on what matters: showing up.
-        </p>
+      <div class="col-md-6 mb-4" data-aos="fade-right">
+        <h3 class="text-red">Built for Everyone</h3>
+        <p>From beginners to pros, FitJacket gives you the structure to build habits, track progress, and stay focused without distraction.</p>
+        <p>Simple, powerful, and designed for real-world results — not vanity metrics.</p>
       </div>
-      <div class="col-md-6 mb-20" data-aos="fade-left">
+      <div class="col-md-6 mb-4" data-aos="fade-left">
         <h3 class="text-red">Why We Exist</h3>
-        <p>
-          We created FitJacket because we saw a gap between performance and accountability. Spreadsheets and notebooks don't scale. Social platforms are too noisy. We wanted a focused, motivating space just for fitness.
-        </p>
-        <p>
-          If you're here, you're already ahead. Let’s go further together.
-        </p>
+        <p>We saw the gap between motivation and action. FitJacket bridges that gap by focusing on consistency, community, and accountability.</p>
+        <p>Less noise, more growth — let’s move forward together.</p>
       </div>
     </div>
   </div>
 </section>
 
-      <section class="py-5 text-center">
-    <div class="container">
-      <h2 class="text-white mb-3">Join the Movement</h2>
-      <a href="{% url 'account_signup' %}" class="btn btn-outline-light btn-lg">Create an Account</a>
-      <a href="{}" class="btn btn-outline-light btn-lg">Explore Workouts</a>
-    </div>
-  </section>
-
-
 {% endblock %}
-
-
 
 {% block scripts %}
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>AOS.init();</script>
+  <script>AOS.init()</script>
 {% endblock %}
