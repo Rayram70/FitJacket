@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load form_tags %}
+{% block title %}Create Workout Plan{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card bg-dark p-5 rounded shadow-lg" style="width: 100%; max-width: 800px;">
+    <h2 class="text-white mb-4 text-center">💪 Build Your Custom Plan</h2>
+
+    <form method="post" id="workoutForm" action="{% url 'workoutplans:request' %}">
+      {% csrf_token %}
+
+      <!-- Personal Information Section -->
+      <div class="mb-4 p-3 border rounded">
+        <h4 class="text-white mb-3">Personal Information</h4>
+
+        <div class="mb-3">
+          <label for="{{ form.age.id_for_label }}" class="form-label text-white">Age</label>
+          {{ form.age }}
+          <div class="form-text">{{ form.age.help_text }}</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-white">Fitness Level</label>
+          <div class="d-flex flex-wrap gap-3">
+            {% for choice in form.fitness_level %}
+              <div class="form-check">
+                {{ choice.tag }}
+                <label class="form-check-label text-white" for="{{ choice.id_for_label }}">
+                  {{ choice.choice_label }}
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-white">Primary Goal</label>
+          <div class="d-flex flex-wrap gap-3">
+            {% for choice in form.goal %}
+              <div class="form-check">
+                {{ choice.tag }}
+                <label class="form-check-label text-white" for="{{ choice.id_for_label }}">
+                  {{ choice.choice_label }}
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Workout Preferences Section -->
+      <div class="mb-4 p-3 border rounded">
+        <h4 class="text-white mb-3">Workout Preferences</h4>
+
+        <div class="mb-3">
+          <label for="{{ form.days_per_week.id_for_label }}" class="form-label text-white">Days Per Week</label>
+          {{ form.days_per_week }}
+          <div class="form-text">{{ form.days_per_week.help_text }}</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.session_duration.id_for_label }}" class="form-label text-white">Session Duration</label>
+          {{ form.session_duration }}
+          <div class="form-text">{{ form.session_duration.help_text }}</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-white">Available Equipment</label>
+          <div class="d-flex flex-wrap gap-3">
+            {% for choice in form.equipment %}
+              <div class="form-check">
+                {{ choice.tag }}
+                <label class="form-check-label text-white" for="{{ choice.id_for_label }}">
+                  {{ choice.choice_label }}
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+          <div class="form-text">{{ form.equipment.help_text }}</div>
+        </div>
+      </div>
+
+      <!-- Special Considerations Section -->
+      <div class="mb-4 p-3 border rounded">
+        <h4 class="text-white mb-3">Special Considerations</h4>
+
+        <div class="mb-3">
+          <label for="{{ form.injuries.id_for_label }}" class="form-label text-white">Injuries/Limitations</label>
+          {{ form.injuries }}
+          <div class="form-text">{{ form.injuries.help_text }}</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.preferences.id_for_label }}" class="form-label text-white">Preferences</label>
+          {{ form.preferences }}
+          <div class="form-text">{{ form.preferences.help_text }}</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.additional_notes.id_for_label }}" class="form-label text-white">Additional Notes</label>
+          {{ form.additional_notes }}
+          <div class="form-text">{{ form.additional_notes.help_text }}</div>
+        </div>
+      </div>
+
+      <div class="d-grid gap-2 mt-4">
+        <button type="submit" id="submitBtn" class="btn btn-primary btn-lg">Generate Plan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+    </form>
+  </div>
+</div>
+
+<!-- Loading Overlay - Initially hidden -->
+<div id="loadingOverlay" class="loading-overlay" style="display: none;">
+  <div class="text-center">
+    <div class="spinner-border text-light" style="width: 4rem; height: 4rem;" role="status"></div>
+    <h4 class="mt-4 text-light">Building your custom plan...</h4>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('workoutForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const loadingOverlay = document.getElementById('loadingOverlay');
+
+  // Ensure overlay is hidden on page load
+  loadingOverlay.style.display = 'none';
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Only show overlay when form is submitted
+    submitBtn.disabled = true;
+    loadingOverlay.style.display = 'flex';
+
+    fetch(form.action, {
+      method: "POST",
+      body: new FormData(form),
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Network response was not ok');
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        window.location.href = "{% url 'workoutplans:results' %}";
+      } else {
+        alert(data.message || 'Something went wrong.');
+        loadingOverlay.style.display = 'none';
+        submitBtn.disabled = false;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      loadingOverlay.style.display = 'none';
+      submitBtn.disabled = false;
+      alert('An error occurred. Please try again.');
+    });
+  });
+});
+</script>
+{% endblock %}
+
+<style>
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.9);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Rest of your form styles */
+</style>
