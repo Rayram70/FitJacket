@@ -42,6 +42,8 @@ urlpatterns = [
 
         path('trainers/', include(('trainers.urls', 'trainers'), namespace='trainers')),
 
+        path('', include('home.urls')),
+
 
 
 ]
